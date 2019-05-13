@@ -23,3 +23,6 @@
 # Ignore .env files as they are personal
 /.env
 /docker-compose.override.yml
+
+# Ignore module project path
+/web/modules/ckeditor_axe
