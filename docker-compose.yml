@@ -15,6 +15,7 @@ services:
       PHP_FPM_USER: wodby
       PHP_FPM_GROUP: wodby
       COLUMNS: 80 # Set 80 columns for docker exec -it.
+      DRUSH_OPTIONS_URI: "http://${PROJECT_BASE_URL}"
     volumes:
       - ./:/var/www/html
     links:
@@ -63,7 +64,7 @@ services:
       - "3000"
     volumes:
       - ./:/var/www/html
-    command: sh -c 'yarn install && yarn run start'
+    command: sh -c 'yarn install && yarn run watch:js-dev'
     links:
       - "traefik:${PROJECT_BASE_URL}"
 
