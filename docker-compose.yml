@@ -18,8 +18,6 @@ services:
       DRUSH_OPTIONS_URI: "http://${PROJECT_BASE_URL}"
     volumes:
       - ./:/var/www/html
-    links:
-      - "traefik:${PROJECT_BASE_URL}"
 
   nginx:
     image: wodby/nginx:$NGINX_TAG

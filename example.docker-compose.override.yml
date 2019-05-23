@@ -2,7 +2,11 @@ version: "3"
 
 services:
   php:
-#    environment:
+    environment:
+      SIMPLETEST_BASE_URL: "http://nginx"
+      SIMPLETEST_DB: "${DB_DRIVER}://${DB_USER}:${DB_PASSWORD}@${DB_HOST}/${DB_NAME}#tests_"
+      MINK_DRIVER_ARGS_WEBDRIVER: '["chrome", {"browserName":"chrome","goog:chromeOptions":{"args":["--disable-gpu","--headless"]}}, "http://chrome:9515"]'
+      SYMFONY_DEPRECATIONS_HELPER: enabled
 #      PHP_SENDMAIL_PATH: /usr/sbin/sendmail -t -i -S opensmtpd:25
 #      # Read instructions at https://wodby.com/stacks/drupal/docs/local/xdebug/
 #      PHP_XDEBUG: 1
@@ -37,6 +41,22 @@ services:
       - 'traefik.backend=${PROJECT_NAME}_portainer'
       - 'traefik.port=9000'
       - 'traefik.frontend.rule=Host:portainer.${PROJECT_BASE_URL}'
+
+  chrome:
+    image: selenium/standalone-chrome:3.141.59
+    container_name: "${PROJECT_NAME}_chrome"
+    volumes:
+      - /dev/shm:/dev/shm
+    ports:
+#      - "4444:4444"
+      - "9515:9515"
+    entrypoint:
+      - chromedriver
+      - "--no-sandbox"
+      - "--disable-dev-shm-usage"
+      - "--log-path=/tmp/chromedriver.log"
+      - "--verbose"
+      - "--whitelisted-ips="
 
   traefik:
     ports:
